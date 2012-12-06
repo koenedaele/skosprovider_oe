@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import os
-import sys
 
 import skosprovider_oe
 
@@ -9,8 +8,6 @@ try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
-
-os.environ['PYTHONDONTWRITEBYTECODE'] = '1'
 
 packages = [
     'skosprovider_oe',
@@ -46,5 +43,3 @@ setup(
         'Programming Language :: Python :: 2.7',
     ),
 )
-
-del os.environ['PYTHONDONTWRITEBYTECODE']
