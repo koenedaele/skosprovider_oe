@@ -14,7 +14,7 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
     def setUp(self):
         self.typologie = OnroerendErfgoedProvider(
             {'id': 'TYPOLOGIE'},
-            'http://localhost/oeps/thesaurus/typologie'
+            'https://inventaris.onroerenderfgoed.be/thesaurus/typologie'
         )
 
     def tearDown(self):
