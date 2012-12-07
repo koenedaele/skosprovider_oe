@@ -20,6 +20,15 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def test_default_url(self):
+        typologie = OnroerendErfgoedProvider(
+            {'id': 'TYPOLOGIE'}
+        )
+        self.assertEquals(
+            'https://inventaris.onroerenderfgoed.be/thesaurus/typologie',
+            typologie.url
+            )
+
     def test_get_vocabulary_id(self):
         self.assertEquals('TYPOLOGIE', self.typologie.get_vocabulary_id())
 
@@ -47,3 +56,12 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
     def test_expand_concept(self):
         result = self.typologie.expand_concept(100)
         self.assertGreater(len(result),0)
+
+    def test_get_by_id(self):
+        kerken = self.typologie.find({'label': 'kerken'})
+        for k in kerken: 
+            result = self.typologie.get_by_id(k['id'])
+            self.assertIsInstance(result, dict)
+            self.assertIn('id', result)
+            self.assertIn('labels', result)
+
