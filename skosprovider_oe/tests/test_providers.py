@@ -2,13 +2,9 @@
 
 import unittest
 
-import os
-import sys
-sys.path.insert(0, os.path.abspath('..'))
-
 from skosprovider_oe.providers import (
     OnroerendErfgoedProvider
-    )
+)
 
 class OnroerendErfgoedProviderTests(unittest.TestCase):
     def setUp(self):
