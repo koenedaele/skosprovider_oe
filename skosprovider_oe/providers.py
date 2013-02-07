@@ -24,7 +24,7 @@ class OnroerendErfgoedProvider(VocabularyProvider):
         r = requests.get(url)
         if r.status_code == 404:
             return False
-        result = r.json
+        result = r.json()
         if result['term_type'] == 'ND':
             return self.get_by_id(result['use'])
         concept = {}
@@ -59,7 +59,7 @@ class OnroerendErfgoedProvider(VocabularyProvider):
         '''
         url = (self.url + '/%s.json') % id
         r = requests.get(url)
-        return r.json
+        return r.json()
 
     def find(self, query):
         return self._do_query(query)
@@ -74,7 +74,7 @@ class OnroerendErfgoedProvider(VocabularyProvider):
         else:
             args = {'type[]': ['HR', 'PT', 'NL']}
         r = requests.get(url, params=args)
-        result = r.json
+        result = r.json()
         return [
             {
                 'id': x['id'],
@@ -85,4 +85,4 @@ class OnroerendErfgoedProvider(VocabularyProvider):
     def expand_concept(self, id):
         url = (self.url + '/%s/subtree.json') % id
         r = requests.get(url)
-        return r.json
+        return r.json()
