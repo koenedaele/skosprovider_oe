@@ -15,7 +15,7 @@ packages = [
 
 requires = [
     'skosprovider',
-    'requests>0.14,<0.14.99'
+    'requests>=1.0.0'
 ]
 
 setup(
@@ -34,12 +34,12 @@ setup(
     install_requires=requires,
     license=open('LICENSE').read(),
     zip_safe=False,
-    classifiers=(
+    classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'Natural Language :: English',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
-    ),
+    ],
 )
