@@ -20,7 +20,7 @@ requires = [
 
 setup(
     name='skosprovider_oe',
-    version='0.1.0',
+    version='0.1.0dev',
     description='A SKOS provider for OE vocabularies.',
     long_description=open('README.rst').read() + '\n\n' +
                      open('HISTORY.rst').read(),
@@ -31,8 +31,8 @@ setup(
     package_data={'': ['LICENSE']},
     package_dir={'skosprovider': 'skosprovider'},
     include_package_data=True,
-    install_requires=requires,
-    license=open('LICENSE').read(),
+    install_requires = requires,
+    license='MIT',
     zip_safe=False,
     classifiers=[
         'Development Status :: 3 - Alpha',
@@ -40,6 +40,8 @@ setup(
         'Natural Language :: English',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.2'
     ],
 )

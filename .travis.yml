@@ -5,5 +5,5 @@ python:
  - 3.2
 install:
  - python setup.py -q install
- - pip install nose coverage
+ - pip install nose coverage unittest2
 script: nosetests --with-coverage
