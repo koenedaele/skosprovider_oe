@@ -13,7 +13,7 @@ Usage
 
 .. code-block:: python
 
-    from skosprovider_oe.providers OnroerendErfgoedProvider
+    from skosprovider_oe.providers import OnroerendErfgoedProvider
     
     typologie = OnroerendErfgoedProvider(
         {'id': 'TYPOLOGIE'},
