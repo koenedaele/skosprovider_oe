@@ -106,14 +106,34 @@ class OnroerendErfgoedProvider(VocabularyProvider):
                 args['term'] = query['label']
         r = requests.get(url, params=args)
         result = r.json()
+        items = result['items']
+        if query is not None and 'collection' in query:
+            #Restrict results to element of collection
+            coll = self.get_by_id(query['collection']['id'])
+            if not coll or not isinstance(coll, Collection):
+                raise ValueError(
+                    'You are searching for items in an unexisting collection.'
+                )
+            else:
+                if 'depth' in query['collection'] and query['collection']['depth'] == 'all':
+                    members = self.expand(coll.id)
+                else:
+                    members = coll.members
+            items = [x for x in items if x['id'] in members]
         return [
             {
                 'id': x['id'],
                 'label': x['omschrijving']
-            } for x in result['items']
+            } for x in items
         ]
 
     def expand_concept(self, id):
+        return self.expand(id)
+
+    def expand(self, id):
         url = (self.url + '/%s/subtree.json') % id
         r = requests.get(url)
+        if r.status_code == 404:
+            return False
         return r.json()
+

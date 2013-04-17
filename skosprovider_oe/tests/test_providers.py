@@ -77,6 +77,39 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
             cc = self.stijl.get_by_id(c['id'])
             self.assertIsInstance(cc, Concept)
 
+    def test_find_in_collection(self):
+        result = self.stijl.find({
+            'collection': {
+                'id': 62,
+                'depth': 'all'
+            }
+        })
+        self.assertGreater(len(result), 0)
+        resultids = [s.get('id') for s in result]
+        expansion = self.stijl.expand(62)
+        self.assertEqual(set(expansion),set(resultids))
+
+    def test_find_in_collection_depth(self):
+        members = self.typologie.find({
+            'collection': {
+                'id': 1604,
+                'depth': 'members'
+            }, 
+            'type': 'concept'
+        })
+        all = self.typologie.find({
+            'collection': {
+                'id': 1604,
+                'depth': 'all'
+            },
+            'type': 'concept'
+        })
+        self.assertGreater(len(all), len(members))
+        self.assertNotEqual(members, all)
+
+    def test_find_in_unexisting_collection(self):
+        self.assertRaises(ValueError, self.stijl.find, {'collection': {'id': 'bestaat_niet'}})
+
     def test_get_all(self):
         result = self.typologie.get_all()
         self.assertGreater(len(result), 0)
@@ -87,6 +120,9 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
     def test_expand_concept(self):
         result = self.typologie.expand_concept(100)
         self.assertGreater(len(result), 0)
+
+    def test_expand_unexisting(self):
+        self.assertEqual(False, self.typologie.expand(987654321))
 
     def test_get_by_id(self):
         '''
