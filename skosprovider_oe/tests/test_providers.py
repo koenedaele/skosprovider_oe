@@ -9,12 +9,21 @@ from skosprovider_oe.providers import (
     OnroerendErfgoedProvider
 )
 
+from skosprovider.skos import (
+    Concept,
+    Collection
+)
+
 
 class OnroerendErfgoedProviderTests(unittest.TestCase):
     def setUp(self):
         self.typologie = OnroerendErfgoedProvider(
             {'id': 'TYPOLOGIE'},
             'https://inventaris.onroerenderfgoed.be/thesaurus/typologie'
+        )
+        self.stijl = OnroerendErfgoedProvider(
+            {'id': 'STIJL'},
+            'https://inventaris.onroerenderfgoed.be/thesaurus/stijl'
         )
 
     def tearDown(self):
@@ -46,6 +55,28 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
             self.assertIn('id', c)
             self.assertIn('label', c)
 
+    def test_find_collections(self):
+        result = self.typologie.find({'type': 'collection'})
+        self.assertGreater(len(result), 0)
+        for c in result:
+            self.assertIn('id', c)
+            self.assertIn('label', c)
+            cc = self.typologie.get_by_id(c['id'])
+            self.assertIsInstance(cc, Collection)
+
+    def test_find_concepts(self):
+        # Use stijl thesaurus to speed things up
+        result = self.stijl.find({
+            'type': 'concept',
+            'label': 'isme'
+        })
+        self.assertGreater(len(result), 0)
+        for c in result:
+            self.assertIn('id', c)
+            self.assertIn('label', c)
+            cc = self.stijl.get_by_id(c['id'])
+            self.assertIsInstance(cc, Concept)
+
     def test_get_all(self):
         result = self.typologie.get_all()
         self.assertGreater(len(result), 0)
@@ -58,9 +89,19 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
         self.assertGreater(len(result), 0)
 
     def test_get_by_id(self):
-        kerken = self.typologie.find({'label': 'kerken'})
+        '''
+        Query for hoeven and check each individual.
+
+        Querying for hoeven gives us both concepts and collections to test.
+        '''
+        kerken = self.typologie.find({'label': 'hoeven'})
         for k in kerken:
             result = self.typologie.get_by_id(k['id'])
-            self.assertIsInstance(result, dict)
-            self.assertIn('id', result)
-            self.assertIn('labels', result)
+            try:
+                self.assertIsInstance(result, Concept)
+            except AssertionError:
+                self.assertIsInstance(result, Collection)
+
+    def test_get_by_id_returns_primary_term(self):
+        result = self.stijl.get_by_id(58)
+        self.assertNotEquals(58, result.id)
