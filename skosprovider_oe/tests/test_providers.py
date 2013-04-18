@@ -27,7 +27,8 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
         )
 
     def tearDown(self):
-        pass
+        del self.typologie
+        del self.stijl
 
     def test_default_url(self):
         typologie = OnroerendErfgoedProvider(
