@@ -14,13 +14,13 @@ packages = [
 ]
 
 requires = [
-    'skosprovider>=0.2.0dev',
+    'skosprovider>=0.2.0a1',
     'requests>=1.0.0'
 ]
 
 setup(
     name='skosprovider_oe',
-    version='0.2.0dev',
+    version='0.2.0a1',
     description='A SKOS provider for OE vocabularies.',
     long_description=open('README.rst').read() + '\n\n' +
                      open('HISTORY.rst').read(),
@@ -45,6 +45,6 @@ setup(
         'Programming Language :: Python :: 3.2'
     ],
     dependency_links = [
-        'https://github.com/koenedaele/skosprovider/tarball/zerotwo#egg=skosprovider-0.2.0',
+        'https://github.com/koenedaele/skosprovider/tarball/zerotwo#egg=skosprovider-0.2.0a1',
     ]
 )
