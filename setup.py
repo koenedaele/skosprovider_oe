@@ -14,13 +14,13 @@ packages = [
 ]
 
 requires = [
-    'skosprovider>=0.2.0,<0.3.0',
+    'skosprovider>=0.3.0',
     'requests>=1.0.0'
 ]
 
 setup(
     name='skosprovider_oe',
-    version='0.2.1',
+    version='0.3.0a1',
     description='A SKOS provider for OE vocabularies.',
     long_description=open('README.rst').read() + '\n\n' +
                      open('HISTORY.rst').read(),
