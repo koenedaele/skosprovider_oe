@@ -9,6 +9,10 @@ from skosprovider.skos import (
 
 import requests
 
+import warnings
+
+from skosprovider.uri import UriPatternGenerator
+
 
 class OnroerendErfgoedProvider(VocabularyProvider):
     '''A provider that can work with the REST-services of
@@ -16,13 +20,22 @@ class OnroerendErfgoedProvider(VocabularyProvider):
 
     '''
 
-    def __init__(self, metadata, url=None):
+    def __init__(self, metadata, **kwargs):
         if not 'default_language' in metadata:
             metadata['default_language'] = 'nl'
-        super(OnroerendErfgoedProvider, self).__init__(metadata)
-        if url is None:
-            url = 'https://inventaris.onroerenderfgoed.be/thesaurus/typologie'
-        self.url = url
+        if 'base_url' in kwargs:
+            self.base_url = kwargs['base_url']
+        else:
+            self.base_url = 'https://inventaris.onroerenderfgoed.be/thesaurus/%s'
+        if 'thesaurus' in kwargs:
+            self.thesaurus = kwargs['thesaurus']
+        else:
+            self.thesaurus = 'typologie'
+        if not 'url' in kwargs:
+            self.url = self.base_url % self.thesaurus
+        else:
+            self.url = kwargs['url']
+        super(OnroerendErfgoedProvider, self).__init__(metadata, **kwargs)
 
     def get_by_id(self, id):
         url = (self.url + '/%s.json') % id
@@ -63,6 +76,15 @@ class OnroerendErfgoedProvider(VocabularyProvider):
         if 'related_terms' in result:
             concept['related'] = result['related_terms']
         return self._from_dict(concept)
+
+    def get_by_uri(self, uri):
+        warnings.warn(                                                          
+            'This provider currently does not fully support URIs,\
+             because the underlying service does not support them and URIs \
+             have not been decided for these thesauri.',
+             UserWarning                                                  
+        )
+        return False
 
     def _from_dict(self, concept):
         if concept['type'] == 'concept':

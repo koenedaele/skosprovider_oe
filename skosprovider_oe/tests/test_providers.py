@@ -19,11 +19,11 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
     def setUp(self):
         self.typologie = OnroerendErfgoedProvider(
             {'id': 'TYPOLOGIE'},
-            'https://inventaris.onroerenderfgoed.be/thesaurus/typologie'
+            url='https://inventaris.onroerenderfgoed.be/thesaurus/typologie'
         )
         self.stijl = OnroerendErfgoedProvider(
             {'id': 'STIJL'},
-            'https://inventaris.onroerenderfgoed.be/thesaurus/stijl'
+            url='https://inventaris.onroerenderfgoed.be/thesaurus/stijl'
         )
 
     def tearDown(self):
@@ -39,6 +39,26 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
             typologie.url
         )
 
+    def test_base_url(self):
+        typologie = OnroerendErfgoedProvider(
+            {'id': 'TYPOLOGIE'},
+            base_url='http://inventaris.vioe.be/thesaurus/%s'
+        )
+        self.assertEquals(
+            'http://inventaris.vioe.be/thesaurus/typologie',
+            typologie.url
+        )
+
+    def test_thesaurus(self):
+        soort = OnroerendErfgoedProvider(
+            {'id': 'SOORT'},
+            thesaurus='soort'
+        )
+        self.assertEquals(
+            'https://inventaris.onroerenderfgoed.be/thesaurus/soort',
+            soort.url
+        )
+
     def test_get_vocabulary_id(self):
         self.assertEquals('TYPOLOGIE', self.typologie.get_vocabulary_id())
 
@@ -48,6 +68,11 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
 
     def test_get_by_unexisting_id(self):
         self.assertFalse(self.typologie.get_by_id('RESTAFVAL'))
+
+    def test_get_by_uri(self):
+        self.assertFalse(self.typologie.get_by_uri(
+            'urn:x-skosprovider:typologie:700'
+        ))
 
     def test_find(self):
         result = self.typologie.find({'label': 'kerken'})
