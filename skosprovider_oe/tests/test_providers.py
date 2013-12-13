@@ -143,6 +143,13 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
             self.assertIn('id', c)
             self.assertIn('label', c)
 
+    def test_get_top_concepts(self):
+        top = self.stijl.get_top_concepts()
+        self.assertGreater(len(top), 0)
+        for c in top:
+            cc = self.stijl.get_by_id(c['id'])
+            self.assertIsInstance(cc, Concept)
+
     def test_expand_concept(self):
         result = self.typologie.expand_concept(100)
         self.assertGreater(len(result), 0)

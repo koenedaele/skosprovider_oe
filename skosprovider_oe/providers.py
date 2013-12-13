@@ -115,6 +115,27 @@ class OnroerendErfgoedProvider(VocabularyProvider):
     def get_all(self):
         return self._do_query()
 
+    def get_top_concepts(self):
+        url = self.url + '/lijst.json'
+        args = {'type[]': ['HR']}
+        r = requests.get(url, params=args)
+        result = r.json()
+        items = result['items']
+        top = self.get_by_id(items[0]['id'])
+        res = []
+        def expand_coll(res, coll):
+            for nid in coll.members:
+                c = self.get_by_id(nid)
+                if isinstance(c, Collection):
+                    res = expand_coll(res, c)
+                else:
+                    res.append({
+                        'id': c.id,
+                        'label': c.label()
+                    })
+            return res
+        return expand_coll(res, top)
+
     def _do_query(self, query=None):
         url = self.url + '/lijst.json'
         args = {'type[]': ['HR', 'PT', 'NL']}
