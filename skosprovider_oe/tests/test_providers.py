@@ -25,6 +25,11 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
             {'id': 'STIJL'},
             url='https://inventaris.onroerenderfgoed.be/thesaurus/stijl'
         )
+        self.gebeurtenis = OnroerendErfgoedProvider(
+            {'id': 'DATERING'},
+            base_url='https://inventaris.onroerenderfgoed.be/thesaurus/%s',
+            thesaurus='gebeurtenis'
+        )
 
     def tearDown(self):
         del self.typologie
@@ -82,12 +87,12 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
             self.assertIn('label', c)
 
     def test_find_collections(self):
-        result = self.typologie.find({'type': 'collection'})
+        result = self.stijl.find({'type': 'collection'})
         self.assertGreater(len(result), 0)
         for c in result:
             self.assertIn('id', c)
             self.assertIn('label', c)
-            cc = self.typologie.get_by_id(c['id'])
+            cc = self.stijl.get_by_id(c['id'])
             self.assertIsInstance(cc, Collection)
 
     def test_find_concepts(self):
@@ -144,10 +149,10 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
             self.assertIn('label', c)
 
     def test_get_top_concepts(self):
-        top = self.stijl.get_top_concepts()
+        top = self.gebeurtenis.get_top_concepts()
         self.assertGreater(len(top), 0)
         for c in top:
-            cc = self.stijl.get_by_id(c['id'])
+            cc = self.gebeurtenis.get_by_id(c['id'])
             self.assertIsInstance(cc, Concept)
 
     def test_expand_concept(self):
@@ -174,3 +179,15 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
     def test_get_by_id_returns_primary_term(self):
         result = self.stijl.get_by_id(58)
         self.assertNotEquals(58, result.id)
+
+    def test_get_top_display(self):
+        top = self.stijl.get_top_display()
+        self.assertGreater(len(top), 0)
+
+    def test_get_children_display_concepts(self):
+        kapeltypes = self.typologie.get_children_display(513)
+        self.assertGreater(len(kapeltypes), 0)
+
+    def test_get_children_display_collections(self):
+        cult_metal = self.stijl.get_children_display(63)
+        self.assertGreater(len(cult_metal), 0)

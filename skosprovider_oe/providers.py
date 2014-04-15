@@ -115,7 +115,8 @@ class OnroerendErfgoedProvider(VocabularyProvider):
     def get_all(self):
         return self._do_query()
 
-    def get_top_concepts(self):
+    def get_top_concepts(self, **kwargs):
+        language = self._get_language(**kwargs)
         url = self.url + '/lijst.json'
         args = {'type[]': ['HR']}
         r = requests.get(url, params=args)
@@ -131,7 +132,7 @@ class OnroerendErfgoedProvider(VocabularyProvider):
                 else:
                     res.append({
                         'id': c.id,
-                        'label': c.label()
+                        'label': c.label(language)
                     })
             return res
         return expand_coll(res, top)
@@ -180,3 +181,64 @@ class OnroerendErfgoedProvider(VocabularyProvider):
             return False
         return r.json()
 
+    def get_top_display(self, **kwargs):
+        '''
+        Returns all concepts or collections that form the top-level of a display
+        hierarchy.
+
+        As opposed to the :meth:`get_top_concepts`, this method can possibly
+        return both concepts and collections. 
+
+        :rtype: Returns a list of concepts and collections. For each an
+            id is present and a label. The label is determined by looking at 
+            the `**kwargs` parameter, the default language of the provider 
+            and falls back to `en` if nothing is present.
+        '''
+        language = self._get_language(**kwargs)
+        url = self.url + '/lijst.json'
+        args = {'type[]': ['HR']}
+        r = requests.get(url, params=args)
+        result = r.json()
+        items = result['items']
+        top = self.get_by_id(items[0]['id'])
+        res = []
+        def expand_coll(res, coll):
+            for nid in coll.members:
+                c = self.get_by_id(nid)
+                res.append({
+                    'id': c.id,
+                    'label': c.label(language)
+                })
+            return res
+        return expand_coll(res, top)
+
+    def get_children_display(self, id, **kwargs):
+        '''
+        Return a list of concepts or collections that should be displayed
+        under this concept or collection.
+
+        :param id: A concept or collection id.
+        :rtype: A list of concepts and collections. For each an
+            id is present and a label. The label is determined by looking at
+            the `**kwargs` parameter, the default language of the provider 
+            and falls back to `en` if nothing is present. If the id does not 
+            exist, return `False`.
+        '''
+        language = self._get_language(**kwargs)
+        item = self.get_by_id(id)
+        res = []
+        if isinstance(item, Collection):
+            for mid in item.members:
+                m = self.get_by_id(mid)
+                res.append({
+                    'id': m.id,
+                    'label': m.label(language)
+                })
+        else:
+            for cid in item.narrower:
+                c = self.get_by_id(cid)
+                res.append({
+                    'id': c.id,
+                    'label': c.label(language)
+                })
+        return res
