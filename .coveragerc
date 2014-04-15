@@ -1,0 +1,5 @@
+[run]
+source = skosprovider_oe
+
+[report]
+show_missing = True

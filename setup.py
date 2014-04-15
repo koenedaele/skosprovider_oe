@@ -29,7 +29,7 @@ setup(
     url='http://github.com/koenedaele/skosprovider_oe',
     packages=packages,
     package_data={'': ['LICENSE']},
-    package_dir={'skosprovider': 'skosprovider'},
+    package_dir={'skosprovider_oe': 'skosprovider_oe'},
     include_package_data=True,
     install_requires = requires,
     license='MIT',
@@ -42,6 +42,7 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.2'
+        'Programming Language :: Python :: 3.2',
+        'Programming Language :: Python :: 3.3'
     ],
 )
