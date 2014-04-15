@@ -1,7 +1,9 @@
 0.3.0 (2014-??-??)
 ------------------
 
-- Make compatible with skosprovider 0.3.
+- Make compatible with skosprovider 0.3.x
+- Switch to py.test
+- Add support for Coveralls
 
 0.2.1 (2013-12-06)
 ------------------
