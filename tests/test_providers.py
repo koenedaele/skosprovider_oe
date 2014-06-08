@@ -191,3 +191,8 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
     def test_get_children_display_collections(self):
         cult_metal = self.stijl.get_children_display(63)
         self.assertGreater(len(cult_metal), 0)
+
+    def test_member_of(self):
+        romaans = self.stijl.get_by_id(3)
+        self.assertIn('member_of', romaans)
+        self.assertEquals([60], romaans.member_of)

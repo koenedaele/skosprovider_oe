@@ -57,7 +57,27 @@ class OnroerendErfgoedProvider(VocabularyProvider):
             }
         )
         if 'broader_term' in result:
-            concept['broader'] = [result['broader_term']]
+            term = self._get_term_by_id(result['broader_term'])
+            # Should not be possible, but you never know
+            if term['term_type'] == 'ND': # pragma: no cover
+                term = self._get_term_by_id(term['use'])
+            if term['term_type'] == 'PT':
+                concept['broader'] = [term['id']]
+            else:
+                concept['member_of'] = [term['id']]
+                if 'broader_term' in term:
+                    bt = self._get_term_by_id(term['broader_term'])
+                else:
+                    bt = False
+                while bt:
+                    if bt['term_type'] == 'PT':
+                        concept['broader'] = [bt['id']]
+                        bt = False
+                    else:
+                        if 'broader_term' in bt:
+                            bt = self._get_term_by_id(bt['broader_term'])
+                        else:
+                            bt = False
         if 'narrower_terms' in result:
             if concept['type'] == 'concept':
                 concept['narrower'] = result['narrower_terms']
@@ -93,13 +113,15 @@ class OnroerendErfgoedProvider(VocabularyProvider):
                 labels = concept['labels'] if 'labels' in concept else [],
                 broader = concept['broader'] if 'broader' in concept else [],
                 narrower = concept['narrower'] if 'narrower' in concept else [],
-                related = concept['related'] if 'related' in concept else []
+                related = concept['related'] if 'related' in concept else [],
+                member_of = concept['member_of'] if 'member_of' in concept else []
             )
         else:
             return Collection(
                 id = concept['id'],
                 labels = concept['labels'] if 'labels' in concept else [],
                 members = concept['members'] if 'members' in concept else [],
+                member_of = concept['member_of'] if 'member_of' in concept else []
             )
 
     def _get_term_by_id(self, id):
