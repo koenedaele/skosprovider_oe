@@ -1,7 +1,8 @@
-0.3.0 (2014-??-??)
+0.3.0 (2014-06-24)
 ------------------
 
 - Make compatible with skosprovider 0.3.x
+- Switch to a requests.Session for handling requests.
 - Switch to py.test
 - Add support for Coveralls
 
