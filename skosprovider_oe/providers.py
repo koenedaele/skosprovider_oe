@@ -20,6 +20,11 @@ class OnroerendErfgoedProvider(VocabularyProvider):
 
     '''
 
+    session = None
+    '''
+    A :class:`requests.Session`
+    '''
+
     def __init__(self, metadata, **kwargs):
         if not 'default_language' in metadata:
             metadata['default_language'] = 'nl'
@@ -35,11 +40,12 @@ class OnroerendErfgoedProvider(VocabularyProvider):
             self.url = self.base_url % self.thesaurus
         else:
             self.url = kwargs['url']
+        self.session = requests.Session()
         super(OnroerendErfgoedProvider, self).__init__(metadata, **kwargs)
 
     def get_by_id(self, id):
         url = (self.url + '/%s.json') % id
-        r = requests.get(url)
+        r = self.session.get(url)
         if r.status_code == 404:
             return False
         result = r.json()
@@ -128,7 +134,7 @@ class OnroerendErfgoedProvider(VocabularyProvider):
         '''Simple utility function to load a term.
         '''
         url = (self.url + '/%s.json') % id
-        r = requests.get(url)
+        r = self.session.get(url)
         return r.json()
 
     def find(self, query):
@@ -141,7 +147,7 @@ class OnroerendErfgoedProvider(VocabularyProvider):
         language = self._get_language(**kwargs)
         url = self.url + '/lijst.json'
         args = {'type[]': ['HR']}
-        r = requests.get(url, params=args)
+        r = self.session.get(url, params=args)
         result = r.json()
         items = result['items']
         top = self.get_by_id(items[0]['id'])
@@ -170,7 +176,7 @@ class OnroerendErfgoedProvider(VocabularyProvider):
                     args['type[]'] = ['PT']
             if 'label' in query:
                 args['term'] = query['label']
-        r = requests.get(url, params=args)
+        r = self.session.get(url, params=args)
         result = r.json()
         items = result['items']
         if query is not None and 'collection' in query:
@@ -198,7 +204,7 @@ class OnroerendErfgoedProvider(VocabularyProvider):
 
     def expand(self, id):
         url = (self.url + '/%s/subtree.json') % id
-        r = requests.get(url)
+        r = self.session.get(url)
         if r.status_code == 404:
             return False
         return r.json()
@@ -219,7 +225,7 @@ class OnroerendErfgoedProvider(VocabularyProvider):
         language = self._get_language(**kwargs)
         url = self.url + '/lijst.json'
         args = {'type[]': ['HR']}
-        r = requests.get(url, params=args)
+        r = self.session.get(url, params=args)
         result = r.json()
         items = result['items']
         top = self.get_by_id(items[0]['id'])
