@@ -131,7 +131,8 @@ class OnroerendErfgoedProvider(VocabularyProvider):
                 broader = concept['broader'] if 'broader' in concept else [],
                 narrower = concept['narrower'] if 'narrower' in concept else [],
                 related = concept['related'] if 'related' in concept else [],
-                member_of = concept['member_of'] if 'member_of' in concept else []
+                member_of = concept['member_of'] if 'member_of' in concept else [],
+                notes = concept['notes'] if 'notes' in concept else []
             )
         else:
             return Collection(

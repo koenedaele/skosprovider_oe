@@ -15,7 +15,7 @@ from skosprovider.skos import (
 )
 
 
-class OnroerendErfgoedProviderTests(unittest.TestCase):
+class OnroerendErfgoedProviderTests(unittest.TestCase): 
     def setUp(self):
         self.typologie = OnroerendErfgoedProvider(
             {'id': 'TYPOLOGIE'},
