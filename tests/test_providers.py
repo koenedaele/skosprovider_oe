@@ -208,6 +208,9 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
         note_2 = 'HASLINGHUIS, E.J. en JANSE, H., Verklarend woordenboek van de westerse architectuur- en bouwhistorie: bouwkundige termen, Leiden, 2005.'
         self.assertIn(note_1, note_values)
         self.assertIn(note_2, note_values)
-        actualisatie = self.gebeurtenis.get_by_id(66)
+        ad_hoc = self.gebeurtenis.get_by_id(66)
+        self.assertIn('notes', ad_hoc)
+        self.assertEqual(0, len(ad_hoc['notes']))
+        actualisatie = self.gebeurtenis.get_by_id(120)
         self.assertIn('notes', actualisatie)
-        self.assertEqual(0, len(actualisatie['notes']))
+        self.assertEqual(2, len(actualisatie['notes']))
