@@ -102,17 +102,19 @@ class OnroerendErfgoedProvider(VocabularyProvider):
         if 'related_terms' in result:
             concept['related'] = result['related_terms']
         concept['notes'] = []
-        note_types = {'scope_note': 'scopeNote', 'source_note': 'scopeNote', 'indexing_note': 'note'}
-        for note_type_oe, note_type_skos in note_types.items():
-            if note_type_oe in result:
-                if result[note_type_oe]:
-                    concept['notes'].append(
-                        {
-                            'type': note_type_skos,
-                            'language': result['language'],
-                            'note': result[note_type_oe]
-                        }
-                    )
+        note_type_map = {
+            'scope_note': 'definition',
+            'source_note': 'note',
+            'indexing_note': 'scopeNote',
+            'history_note': 'historyNote'
+        }
+        for note_type_oe, note_type_skos in note_type_map.items():
+            if note_type_oe in result and result[note_type_oe]:
+                concept['notes'].append({
+                    'type': note_type_skos,
+                    'language': result['language'],
+                    'note': result[note_type_oe]
+                })
         return self._from_dict(concept)
 
     def get_by_uri(self, uri):
