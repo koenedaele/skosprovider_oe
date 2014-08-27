@@ -197,6 +197,12 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
         self.assertIn('member_of', romaans)
         self.assertEquals([60], romaans.member_of)
 
+    def test_broader_concepts_of_collection(self):
+        opgravingen_naar_methode = self.gebeurtenis.get_by_id(67)
+        self.assertIn(38, opgravingen_naar_methode.broader)
+        self.assertEqual(len(opgravingen_naar_methode.broader), 1)
+
+
     def test_notes(self):
         romaans = self.stijl.get_by_id(3)
         self.assertIn('notes', romaans)

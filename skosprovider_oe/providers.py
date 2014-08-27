@@ -140,7 +140,8 @@ class OnroerendErfgoedProvider(VocabularyProvider):
                 id = concept['id'],
                 labels = concept['labels'] if 'labels' in concept else [],
                 members = concept['members'] if 'members' in concept else [],
-                member_of = concept['member_of'] if 'member_of' in concept else []
+                member_of = concept['member_of'] if 'member_of' in concept else [],
+                broader = concept['broader'] if 'broader' in concept else []
             )
 
     def _get_term_by_id(self, id):
