@@ -1,2 +1,3 @@
--e git+https://github.com/cahytinne/skosprovider.git#egg=skosprovider
+#skosprovider>=0.4.0
+-e git+https://github.com/koenedaele/skosprovider.git#egg=skosprovider
 requests>=1.0.0

@@ -86,7 +86,12 @@ class OnroerendErfgoedProvider(VocabularyProvider):
                             bt = False
         if 'narrower_terms' in result:
             if concept['type'] == 'concept':
-                concept['narrower'] = result['narrower_terms']
+                for narrower_term in result['narrower_terms']:
+                    nt = self._get_term_by_id(narrower_term)
+                    if nt['term_type'] == 'PT': # concept
+                        concept['narrower'] = concept['narrower'] + [narrower_term] if 'narrower' in concept else [narrower_term]
+                    else:
+                        concept['subordinate'] = concept['subordinate'] + [narrower_term] if 'subordinate' in concept else [narrower_term]
             else:
                 concept['members'] = result['narrower_terms']
         if 'use_for' in result:
@@ -133,6 +138,7 @@ class OnroerendErfgoedProvider(VocabularyProvider):
                 labels = concept['labels'] if 'labels' in concept else [],
                 broader = concept['broader'] if 'broader' in concept else [],
                 narrower = concept['narrower'] if 'narrower' in concept else [],
+                subordinate_arrays = concept['subordinate'] if 'subordinate' in concept else [],
                 related = concept['related'] if 'related' in concept else [],
                 member_of = concept['member_of'] if 'member_of' in concept else [],
                 notes = concept['notes'] if 'notes' in concept else []
@@ -143,7 +149,7 @@ class OnroerendErfgoedProvider(VocabularyProvider):
                 labels = concept['labels'] if 'labels' in concept else [],
                 members = concept['members'] if 'members' in concept else [],
                 member_of = concept['member_of'] if 'member_of' in concept else [],
-                broader = concept['broader'] if 'broader' in concept else []
+                superordinates = concept['broader'] if 'broader' in concept else []
             )
 
     def _get_term_by_id(self, id):

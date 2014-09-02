@@ -194,29 +194,30 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
 
     def test_member_of(self):
         romaans = self.stijl.get_by_id(3)
-        self.assertIn('member_of', romaans)
         self.assertEquals([60], romaans.member_of)
 
-    def test_broader_concepts_of_collection(self):
+    def test_superordinates_of_collection(self):
         opgravingen_naar_methode = self.gebeurtenis.get_by_id(67)
-        self.assertIn(38, opgravingen_naar_methode.broader)
-        self.assertEqual(len(opgravingen_naar_methode.broader), 1)
+        self.assertIn(38, opgravingen_naar_methode.superordinates)
+        self.assertEqual(len(opgravingen_naar_methode.superordinates), 1)
+
+    def test_subordinates_of_collection(self):
+        archeologische_opgravingen = self.gebeurtenis.get_by_id(38)
+        self.assertIn(67, archeologische_opgravingen.subordinate_arrays)
+        self.assertEqual(len(archeologische_opgravingen.subordinate_arrays), 3)
 
 
     def test_notes(self):
         romaans = self.stijl.get_by_id(3)
-        self.assertIn('notes', romaans)
-        self.assertIsInstance(romaans['notes'], list)
         from skosprovider.skos import Note
-        self.assertIsInstance(romaans['notes'][0], Note)
-        note_values = [note_element.note for note_element in romaans['notes']]
+        self.assertIsInstance(romaans.notes, list)
+        self.assertIsInstance(romaans.notes[0], Note)
+        note_values = [note_element.note for note_element in romaans.notes]
         note_1 = 'De romaanse bouwstijl wordt gekenmerkt door massieve stenen muren met kleine gevelopeningen, doorgaans met rondboog en soms gedeeld door middenzuiltjes. De overdekking gebeurde met een vlak houten gewelf, of - minder courant - met stenen ton-, kruis- en koepelgewelven. De decoratieve afwerking wordt gekarakteriseerd door rondboogfriezen, rondboognissen en lisenen. (ca. 10de eeuw tot 1200)'
         note_2 = 'HASLINGHUIS, E.J. en JANSE, H., Verklarend woordenboek van de westerse architectuur- en bouwhistorie: bouwkundige termen, Leiden, 2005.'
         self.assertIn(note_1, note_values)
         self.assertIn(note_2, note_values)
         ad_hoc = self.gebeurtenis.get_by_id(66)
-        self.assertIn('notes', ad_hoc)
-        self.assertEqual(0, len(ad_hoc['notes']))
+        self.assertEqual(0, len(ad_hoc.notes))
         actualisatie = self.gebeurtenis.get_by_id(120)
-        self.assertIn('notes', actualisatie)
-        self.assertEqual(2, len(actualisatie['notes']))
+        self.assertEqual(2, len(actualisatie.notes))

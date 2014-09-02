@@ -14,7 +14,7 @@ packages = [
 ]
 
 requires = [
-    'skosprovider>=0.3.0',
+    'skosprovider>=0.4.0',
     'requests>=1.0.0'
 ]
 
