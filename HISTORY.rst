@@ -4,7 +4,7 @@
 - Make compatible with skosprovider 0.4.x
 - Drop support for Python 2.6 and 3.2
 - Add support for subordinate arrays and superordinate concepts.
-- Make the notes available through the provider.
+- Make notes available through the provider.
 
 0.3.0 (2014-06-24)
 ------------------
