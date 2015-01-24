@@ -62,11 +62,20 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
         )
 
     def test_get_vocabulary_id(self):
-        self.assertEquals('TYPOLOGIE', self.typologie.get_vocabulary_id())
+        self.assertEquals(
+            'TYPOLOGIE',
+            self.typologie.get_vocabulary_id()
+        )
 
     def test_get_metadata(self):
-        self.assertEquals({'id': 'TYPOLOGIE', 'default_language': 'nl'},
-                          self.typologie.get_metadata())
+        self.assertEquals(
+            {
+                'id': 'TYPOLOGIE',
+                'default_language': 'nl',
+                'subject': []
+            },
+            self.typologie.get_metadata()
+        )
 
     def test_get_by_unexisting_id(self):
         self.assertFalse(self.typologie.get_by_id('RESTAFVAL'))
