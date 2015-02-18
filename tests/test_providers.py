@@ -186,6 +186,10 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
         result = self.stijl.get_by_id(58)
         self.assertNotEquals(58, result.id)
 
+    def test_get_by_id_conceptscheme(self):
+        result = self.stijl.get_by_id(58)
+        self.assertEqual(result.concept_scheme, self.stijl.concept_scheme)
+
     def test_get_top_display(self):
         top = self.stijl.get_top_display()
         self.assertGreater(len(top), 0)

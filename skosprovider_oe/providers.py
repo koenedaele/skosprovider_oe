@@ -141,7 +141,8 @@ class OnroerendErfgoedProvider(VocabularyProvider):
                 subordinate_arrays = concept['subordinate'] if 'subordinate' in concept else [],
                 related = concept['related'] if 'related' in concept else [],
                 member_of = concept['member_of'] if 'member_of' in concept else [],
-                notes = concept['notes'] if 'notes' in concept else []
+                notes = concept['notes'] if 'notes' in concept else [],
+                concept_scheme = self.concept_scheme
             )
         else:
             return Collection(
@@ -149,7 +150,8 @@ class OnroerendErfgoedProvider(VocabularyProvider):
                 labels = concept['labels'] if 'labels' in concept else [],
                 members = concept['members'] if 'members' in concept else [],
                 member_of = concept['member_of'] if 'member_of' in concept else [],
-                superordinates = concept['broader'] if 'broader' in concept else []
+                superordinates = concept['broader'] if 'broader' in concept else [],
+                concept_scheme = self.concept_scheme
             )
 
     def _get_term_by_id(self, id):
