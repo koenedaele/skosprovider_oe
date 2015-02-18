@@ -216,6 +216,11 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
         self.assertIn(67, archeologische_opgravingen.subordinate_arrays)
         self.assertEqual(len(archeologische_opgravingen.subordinate_arrays), 3)
 
+    def test_broader_of_concept_in_collection(self):
+        stratigrafische_opgravingen = self.gebeurtenis.get_by_id(68)
+        self.assertEquals([], stratigrafische_opgravingen.broader)
+        self.assertIn(67, stratigrafische_opgravingen.member_of)
+
     def test_notes(self):
         romaans = self.stijl.get_by_id(3)
         from skosprovider.skos import Note
