@@ -23,7 +23,7 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
             url='https://inventaris.onroerenderfgoed.be/thesaurus/stijl'
         )
         self.gebeurtenis = OnroerendErfgoedProvider(
-            {'id': 'DATERING'},
+            {'id': 'GEBEURTENIS'},
             base_url='https://inventaris.onroerenderfgoed.be/thesaurus/%s',
             thesaurus='gebeurtenis'
         )

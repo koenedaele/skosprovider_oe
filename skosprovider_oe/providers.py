@@ -71,19 +71,6 @@ class OnroerendErfgoedProvider(VocabularyProvider):
                 concept['broader'] = [term['id']]
             else:
                 concept['member_of'] = [term['id']]
-                if 'broader_term' in term:
-                    bt = self._get_term_by_id(term['broader_term'])
-                else:
-                    bt = False
-                while bt:
-                    if bt['term_type'] == 'PT':
-                        concept['broader'] = [bt['id']]
-                        bt = False
-                    else:
-                        if 'broader_term' in bt:
-                            bt = self._get_term_by_id(bt['broader_term'])
-                        else:
-                            bt = False
         if 'narrower_terms' in result:
             if concept['type'] == 'concept':
                 for narrower_term in result['narrower_terms']:
