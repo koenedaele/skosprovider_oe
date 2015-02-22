@@ -1,3 +1,9 @@
+0.5.0 (2015-??-??)
+------------------
+
+- Make sure a Concept or Collection gets passed a ConceptScheme from the
+  provider. (#7) [dieuska]
+
 0.4.0 (2015-01-25)
 ------------------
 
