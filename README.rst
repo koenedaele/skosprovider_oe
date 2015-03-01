@@ -17,7 +17,7 @@ Usage
 .. code-block:: python
 
     from skosprovider_oe.providers import OnroerendErfgoedProvider
-    
+
     typologie = OnroerendErfgoedProvider(
         {'id': 'TYPOLOGIE'},
         'https://inventaris.onroerenderfgoed.be/thesaurus/typologie'
