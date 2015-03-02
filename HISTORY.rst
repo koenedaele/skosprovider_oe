@@ -1,4 +1,4 @@
-0.5.0 (2015-??-??)
+0.4.1 (2015-03-02)
 ------------------
 
 - Make sure a Concept or Collection gets passed a ConceptScheme from the

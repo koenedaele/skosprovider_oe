@@ -20,7 +20,7 @@ requires = [
 
 setup(
     name='skosprovider_oe',
-    version='0.5.0-dev',
+    version='0.4.1',
     description='A SKOS provider for OE vocabularies.',
     long_description=open('README.rst').read() + '\n\n' +
                      open('HISTORY.rst').read(),
