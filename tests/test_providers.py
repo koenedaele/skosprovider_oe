@@ -223,10 +223,16 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
         self.assertIsInstance(romaans.notes[0], Note)
         note_values = [note_element.note for note_element in romaans.notes]
         note_1 = 'De romaanse bouwstijl wordt gekenmerkt door massieve stenen muren met kleine gevelopeningen, doorgaans met rondboog en soms gedeeld door middenzuiltjes. De overdekking gebeurde met een vlak houten gewelf, of - minder courant - met stenen ton-, kruis- en koepelgewelven. De decoratieve afwerking wordt gekarakteriseerd door rondboogfriezen, rondboognissen en lisenen. (ca. 10de eeuw tot 1200)'
-        note_2 = 'HASLINGHUIS, E.J. en JANSE, H., Verklarend woordenboek van de westerse architectuur- en bouwhistorie: bouwkundige termen, Leiden, 2005.'
         self.assertIn(note_1, note_values)
-        self.assertIn(note_2, note_values)
         ad_hoc = self.gebeurtenis.get_by_id(66)
         self.assertEqual(0, len(ad_hoc.notes))
         actualisatie = self.gebeurtenis.get_by_id(120)
-        self.assertEqual(2, len(actualisatie.notes))
+        self.assertEqual(1, len(actualisatie.notes))
+
+    def test_source(self):
+        romaans = self.stijl.get_by_id(3)
+        from skosprovider.skos import Source
+        self.assertIsInstance(romaans.sources, list)
+        source = 'HASLINGHUIS, E.J. en JANSE, H., Verklarend woordenboek van de westerse architectuur- en bouwhistorie: bouwkundige termen, Leiden, 2005.'
+        sources = [s.citation for s in romaans.sources]
+        assert source in sources

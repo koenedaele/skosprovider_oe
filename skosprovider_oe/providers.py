@@ -109,7 +109,6 @@ class OnroerendErfgoedProvider(VocabularyProvider):
         concept['notes'] = []
         note_type_map = {
             'scope_note': 'definition',
-            'source_note': 'note',
             'indexing_note': 'scopeNote',
             'history_note': 'historyNote'
         }
@@ -120,6 +119,9 @@ class OnroerendErfgoedProvider(VocabularyProvider):
                     'language': result['language'],
                     'note': result[note_type_oe]
                 })
+        concept['sources'] = []
+        if 'source_note' in result and result['source_note']:
+            concept['sources'].append({'citation': result['source_note']})
         return self._from_dict(concept)
 
     def get_by_uri(self, uri):
@@ -142,6 +144,7 @@ class OnroerendErfgoedProvider(VocabularyProvider):
                 related = concept['related'] if 'related' in concept else [],
                 member_of = concept['member_of'] if 'member_of' in concept else [],
                 notes = concept['notes'] if 'notes' in concept else [],
+                sources = concept['sources'] if 'sources' in concept else [],
                 concept_scheme = self.concept_scheme
             )
         else:
@@ -151,6 +154,7 @@ class OnroerendErfgoedProvider(VocabularyProvider):
                 members = concept['members'] if 'members' in concept else [],
                 member_of = concept['member_of'] if 'member_of' in concept else [],
                 superordinates = concept['broader'] if 'broader' in concept else [],
+                sources = concept['sources'] if 'sources' in concept else [],
                 concept_scheme = self.concept_scheme
             )
 
