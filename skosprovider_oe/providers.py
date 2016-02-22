@@ -173,7 +173,7 @@ class OnroerendErfgoedProvider(VocabularyProvider):
         args = {'type[]': ['HR']}
         r = self.session.get(url, params=args)
         result = r.json()
-        items = result['items']
+        items = result
         top = self.get_by_id(items[0]['id'])
         res = []
         def expand_coll(res, coll):
@@ -202,7 +202,7 @@ class OnroerendErfgoedProvider(VocabularyProvider):
                 args['term'] = query['label']
         r = self.session.get(url, params=args)
         result = r.json()
-        items = result['items']
+        items = result
         if query is not None and 'collection' in query:
             #Restrict results to element of collection
             coll = self.get_by_id(query['collection']['id'])
@@ -251,7 +251,7 @@ class OnroerendErfgoedProvider(VocabularyProvider):
         args = {'type[]': ['HR']}
         r = self.session.get(url, params=args)
         result = r.json()
-        items = result['items']
+        items = result
         top = self.get_by_id(items[0]['id'])
         res = []
         def expand_coll(res, coll):
