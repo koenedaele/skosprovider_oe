@@ -1,0 +1,9 @@
+# Runtime requirements
+--requirement requirements.txt
+
+# Testing
+pytest==2.8.5
+pytest-cov==2.0.0
+
+# Documentation
+Sphinx==1.3.1
