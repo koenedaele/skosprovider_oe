@@ -1,4 +1,4 @@
-0.5.0 (2016-??-??)
+0.5.0 (2016-08-12)
 ------------------
 
 - Make compatible with skosprovider 0.6.x

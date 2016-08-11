@@ -53,6 +53,7 @@ class OnroerendErfgoedProvider(VocabularyProvider):
             return self.get_by_id(result['use'])
         concept = {}
         concept['id'] = result['id']
+        concept['uri'] = result['uri']
         concept['type'] = 'concept' if result['term_type'] == 'PT' else 'collection'
         concept['labels'] = []
         concept['labels'].append(
@@ -122,14 +123,16 @@ class OnroerendErfgoedProvider(VocabularyProvider):
         concept['sources'] = []
         if 'source_note' in result and result['source_note']:
             concept['sources'].append({'citation': result['source_note']})
+        if concept['type'] == 'concept' and 'matches' in result and result['matches']:
+            concept['matches'] = result['matches']
         return self._from_dict(concept)
 
     def get_by_uri(self, uri):
-        warnings.warn(                                                          
+        warnings.warn(
             'This provider currently does not fully support URIs,\
              because the underlying service does not support them and URIs \
              have not been decided for these thesauri.',
-             UserWarning                                                  
+             UserWarning
         )
         return False
 
@@ -145,6 +148,7 @@ class OnroerendErfgoedProvider(VocabularyProvider):
                 member_of = concept['member_of'] if 'member_of' in concept else [],
                 notes = concept['notes'] if 'notes' in concept else [],
                 sources = concept['sources'] if 'sources' in concept else [],
+                matches = concept['matches'] if 'matches' in concept else {},
                 concept_scheme = self.concept_scheme
             )
         else:
@@ -243,11 +247,11 @@ class OnroerendErfgoedProvider(VocabularyProvider):
         hierarchy.
 
         As opposed to the :meth:`get_top_concepts`, this method can possibly
-        return both concepts and collections. 
+        return both concepts and collections.
 
         :rtype: Returns a list of concepts and collections. For each an
-            id is present and a label. The label is determined by looking at 
-            the `**kwargs` parameter, the default language of the provider 
+            id is present and a label. The label is determined by looking at
+            the `**kwargs` parameter, the default language of the provider
             and falls back to `en` if nothing is present.
         '''
         language = self._get_language(**kwargs)
@@ -276,8 +280,8 @@ class OnroerendErfgoedProvider(VocabularyProvider):
         :param id: A concept or collection id.
         :rtype: A list of concepts and collections. For each an
             id is present and a label. The label is determined by looking at
-            the `**kwargs` parameter, the default language of the provider 
-            and falls back to `en` if nothing is present. If the id does not 
+            the `**kwargs` parameter, the default language of the provider
+            and falls back to `en` if nothing is present. If the id does not
             exist, return `False`.
         '''
         language = self._get_language(**kwargs)

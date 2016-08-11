@@ -231,8 +231,13 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
 
     def test_source(self):
         romaans = self.stijl.get_by_id(3)
-        from skosprovider.skos import Source
         self.assertIsInstance(romaans.sources, list)
         source = 'HASLINGHUIS, E.J. en JANSE, H., Verklarend woordenboek van de westerse architectuur- en bouwhistorie: bouwkundige termen, Leiden, 2005.'
         sources = [s.citation for s in romaans.sources]
         assert source in sources
+
+    def test_matches(self):
+        agr_ls = self.typologie.get_by_id(2103)
+        self.assertIsInstance(agr_ls.matches, dict)
+        assert 'related' in agr_ls.matches
+        assert 'http://vocab.getty.edu/aat/300008631' in agr_ls.matches['related']
