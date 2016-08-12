@@ -239,5 +239,6 @@ class OnroerendErfgoedProviderTests(unittest.TestCase):
     def test_matches(self):
         agr_ls = self.typologie.get_by_id(2103)
         self.assertIsInstance(agr_ls.matches, dict)
+        assert 'https://id.erfgoed.net/thesauri/erfgoedtypes/2103' == agr_ls.uri
         assert 'related' in agr_ls.matches
         assert 'http://vocab.getty.edu/aat/300008631' in agr_ls.matches['related']

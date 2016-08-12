@@ -109,8 +109,8 @@ class OnroerendErfgoedProvider(VocabularyProvider):
             concept['related'] = result['related_terms']
         concept['notes'] = []
         note_type_map = {
-            'scope_note': 'definition',
-            'indexing_note': 'scopeNote',
+            'scope_note': 'scopeNote',
+            'indexing_note': 'note',
             'history_note': 'historyNote'
         }
         for note_type_oe, note_type_skos in note_type_map.items():
@@ -140,6 +140,7 @@ class OnroerendErfgoedProvider(VocabularyProvider):
         if concept['type'] == 'concept':
             return Concept(
                 id = concept['id'],
+                uri= concept['uri'],
                 labels = concept['labels'] if 'labels' in concept else [],
                 broader = concept['broader'] if 'broader' in concept else [],
                 narrower = concept['narrower'] if 'narrower' in concept else [],
@@ -154,6 +155,7 @@ class OnroerendErfgoedProvider(VocabularyProvider):
         else:
             return Collection(
                 id = concept['id'],
+                uri = concept['uri'],
                 labels = concept['labels'] if 'labels' in concept else [],
                 members = concept['members'] if 'members' in concept else [],
                 member_of = concept['member_of'] if 'member_of' in concept else [],
